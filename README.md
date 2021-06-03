@@ -83,6 +83,7 @@ Example:
                 lcd_printf("Time: %d:%d\n", timebuf.tm_hour, timebuf.tm_min);
             }
         }
+        __bis_SR_register(LPM3_bits | GIE);
     }
 
 ---

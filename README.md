@@ -68,6 +68,7 @@ It is important for your main code to clear the RTCALARM_*X*_TRIGGERED bitfield 
 ``rtc_status`` so your code can correctly interpret when an alarm has triggered.
 
 Example:
+
     while (1) {
         if (rtc_status & RTC_TICK) {
             rtc_status &= ~RTC_TICK;

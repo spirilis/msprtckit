@@ -1,6 +1,21 @@
 # msprtckit
 RTC kit for MSP430 microcontrollers with basic 1-second tick
 
+This library was developed with the MSP430FR2433 in mind.
+
+It should work for any MSP430FR4xxx/2xxx series chips whose header files define:
+
+    /************************************************************
+    * Real-Time Clock (RTC) Counter
+    ************************************************************/
+    #define __MSP430_HAS_RTC__                    /* Definition to show that Module is available */
+
+Even if your chip does not follow this convention, you can implement your own RTC tick ISR
+with any peripheral you like - Watchdog timer, Timer_A, etc. and keep track of an *epoch* variable,
+of type *unsigned long*, that represents the number of seconds elapsed since
+January 1, 1970 midnight UTC, and utilize the *rtc_interpret()* and *rtc_epoch()* functions in this
+library to provide leap year-corrected time interpretation.
+
 ## Contents
 
 * rtckit.c

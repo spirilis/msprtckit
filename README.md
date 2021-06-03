@@ -43,7 +43,7 @@ and every time the RTC fires (once per second), the ``rtc_status`` global variab
 
 *It is important* that you set ``rtcepoch`` ahead of time somehow - through a special configuration
 mode of your software, or if you intend to reset it every time the CPU restarts, using a statement
-in your ``main()`` function before calling *rtc_init()*
+in your ``main()`` function.  You may change ``rtcepoch`` before or after calling *rtc_init()*
 
 There are also two alarms supported - ``rtcalarm0`` and ``rtcalarm``, when ``rtcepoch``
 reaches these numbers, *IF they are set to a value > 0* some alarm bitfields are set in ``rtc_status``:
@@ -60,6 +60,8 @@ exist:
 If these variables are set to a value > 0, the RTC Interrupt Service Routine will automatically
 increment ``rtcalarm0`` or ``rtcalarm1`` by the appropriate amount every time it fires, allowing
 your code to simply respond to alarms and not worry about incrementing the alarm counter.
+
+All of these variables may be modified by your code without consequence to the RTC ISR function.
 
 ---
 The *rtc_interpret()* function takes a timestamp in "epoch" format - the number of seconds that

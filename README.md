@@ -58,10 +58,31 @@ exist:
 * ``rtcalarm1_incr``
 
 If these variables are set to a value > 0, the RTC Interrupt Service Routine will automatically
-increment ``rtcalarm0`` or ``rtcalarm1`` by the appropriate amount every time it fires, allowing
-your code to simply respond to alarms and not worry about incrementing the alarm counter.
+increment ``rtcalarm0`` or ``rtcalarm1`` by the corresponding amount every time the
+alarm triggers (matching ``rtcepoch`` during an RTC ISR execution), allowing your code to simply
+respond to alarms and not worry about incrementing the alarm counter.
 
 All of these variables may be modified by your code without consequence to the RTC ISR function.
+
+It is important for your main code to clear the RTCALARM_*X*_TRIGGERED bitfield from
+``rtc_status`` so your code can correctly interpret when an alarm has triggered.
+
+Example:
+    while (1) {
+        if (rtc_status & RTC_TICK) {
+            rtc_status &= ~RTC_TICK;
+            /* ^ Not strictly necessary - but - a good idea if your CPU may be woken by
+             * different reasons besides the RTC tick.
+             */
+
+            if (rtc_status & RTCALARM_0_TRIGGERED) {
+                rtc_status &= ~RTCALARM_0_TRIGGERED;  // Very important!
+                timebuf = rtc_interpret(rtcepoch);
+                // Do something appropriate when we know the alarm has triggered-
+                lcd_printf("Time: %d:%d\n", timebuf.tm_hour, timebuf.tm_min);
+            }
+        }
+    }
 
 ---
 The *rtc_interpret()* function takes a timestamp in "epoch" format - the number of seconds that

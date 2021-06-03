@@ -78,8 +78,9 @@ Example:
 
             if (rtc_status & RTCALARM_0_TRIGGERED) {
                 rtc_status &= ~RTCALARM_0_TRIGGERED;  // Very important!
-                timebuf = rtc_interpret(rtcepoch);
+
                 // Do something appropriate when we know the alarm has triggered-
+                timebuf = rtc_interpret(rtcepoch);
                 lcd_printf("Time: %d:%d\n", timebuf.tm_hour, timebuf.tm_min);
             }
         }

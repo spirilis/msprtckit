@@ -65,7 +65,7 @@ so if you want to wake up every second, you must set this bit yourself after
 running *rtc_init()*
 
 ```c
-rtc_init();
+rtc_init(RTC_CLOCK_XT1CLK);          // example using external crystal
 rtc_status |= RTC_TICK_DOES_WAKEUP;  // 1-second RTC tick will wake up the chip
 ```
 

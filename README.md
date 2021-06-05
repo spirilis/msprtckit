@@ -60,8 +60,9 @@ and every time the RTC fires (once per second), the ``rtc_status`` global variab
 If the ``RTC_TICK_DOES_WAKEUP`` bit is set inside ``rtc_status``, the tick will
 wake the processor up from sleep.
 
-By default, ``RTC_TICK_DOES_WAKEUP`` is not enabled so if you want to wake up every second,
-you must set this bit yourself after running *rtc_init()*
+By default, ``RTC_TICK_DOES_WAKEUP`` is not enabled - and this bit is CLEARED during *rtc_init()*
+so if you want to wake up every second, you must set this bit yourself after
+running *rtc_init()*
 
 ```c
 rtc_init();

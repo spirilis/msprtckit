@@ -57,7 +57,7 @@ fully intact within the *rtckit.h* file.  This ISR will increment an ``rtcepoch`
 and every time the RTC fires (once per second), the ``rtc_status`` global variable will have its
 ``RTC_TICK`` bitfield set.
 
-If the rtc_status ``RTC_TICK_DOES_WAKEUP`` bit is set inside ``rtc_status``, the tick will
+If the ``RTC_TICK_DOES_WAKEUP`` bit is set inside ``rtc_status``, the tick will
 wake the processor up from sleep.
 
 By default, ``RTC_TICK_DOES_WAKEUP`` is not enabled so if you want to wake up every second,

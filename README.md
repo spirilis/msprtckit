@@ -16,6 +16,7 @@ of type *unsigned long*, that represents the number of seconds elapsed since
 January 1, 1970 midnight UTC, and utilize the *rtc_interpret()* and *rtc_epoch()* functions in this
 library to provide leap year-corrected time interpretation.
 
+
 ## Contents
 
 * rtckit.c
@@ -54,11 +55,24 @@ the statement:
 
 fully intact within the *rtckit.h* file.  This ISR will increment an ``rtcepoch`` global variable,
 and every time the RTC fires (once per second), the ``rtc_status`` global variable will have its
-``RTC_TICK`` bitfield set and will wake the processor up from sleep.
+``RTC_TICK`` bitfield set.
+
+If the rtc_status ``RTC_TICK_DOES_WAKEUP`` bit is set inside ``rtc_status``, the tick will
+wake the processor up from sleep.
+
+By default, ``RTC_TICK_DOES_WAKEUP`` is not enabled so if you want to wake up every second,
+you must set this bit yourself after running *rtc_init()*
+
+```c
+rtc_init();
+rtc_status |= RTC_TICK_DOES_WAKEUP;  // 1-second RTC tick will wake up the chip
+```
 
 *It is important* that you set ``rtcepoch`` ahead of time somehow - through a special configuration
 mode of your software, or if you intend to reset it every time the CPU restarts, using a statement
 in your ``main()`` function.  You may change ``rtcepoch`` before or after calling *rtc_init()*
+as the init function won't touch it - the variable is usually stored in the FRAM Infomem location
+so it survives across resets of the CPU.
 
 There are also two alarms supported - ``rtcalarm0`` and ``rtcalarm``, when ``rtcepoch``
 reaches these numbers, *IF they are set to a value > 0* some alarm bitfields are set in ``rtc_status``:

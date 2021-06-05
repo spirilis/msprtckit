@@ -163,22 +163,30 @@ void __attribute__ ((interrupt(RTC_VECTOR))) RTC_ISR (void)
 #endif
 {
     if (RTCIV & RTCIV_RTCIF) {
+        int do_wakeup = 0;
+
         rtc_status |= RTC_TICK;
         rtcepoch++;
-
+        if (rtc_status & RTC_TICK_DOES_WAKEUP) {
+            do_wakeup = 1;
+        }
         if (rtcalarm0 > 0 && rtcepoch == rtcalarm0) {
             rtc_status |= RTCALARM_0_TRIGGERED;
             if (rtcalarm0_incr > 0) {
                 rtcalarm0 += rtcalarm0_incr;
             }
+            do_wakeup = 1;
         }
         if (rtcalarm1 > 0 && rtcepoch == rtcalarm1) {
             rtc_status |= RTCALARM_1_TRIGGERED;
             if (rtcalarm1_incr > 0) {
                 rtcalarm1 += rtcalarm1_incr;
             }
+            do_wakeup = 1;
         }
-        __bic_SR_register_on_exit(LPM4_bits);
+        if (do_wakeup) {
+            __bic_SR_register_on_exit(LPM3_bits);
+        }
     }
 }
 #endif /* if defined __MSP430_HAS_RTC__ */

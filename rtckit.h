@@ -56,6 +56,11 @@
 
 /// RTC_TICK bitfield inside rtc_status indicates RTC_ISR has fired
 #define RTC_TICK 0x0001
+
+/// User setting RTC_TICK_DOES_WAKEUP tells the ISR to wake up the chip
+/// for every 1-second tick, clearing this avoids that (unless an alarm triggers)
+#define RTC_TICK_DOES_WAKEUP 0x0100
+
 /// RTCALARM_0_TRIGGERED bitfield inside rtc_status indicates Alarm#0 has triggered
 #define RTCALARM_0_TRIGGERED 0x0002
 /// RTCALARM_1_TRIGGERED bitfield inside rtc_status indicates Alarm#1 has triggered
